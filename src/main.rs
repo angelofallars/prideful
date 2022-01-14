@@ -18,8 +18,19 @@ impl Flag {
         }
     }
 
+    fn height(&self) -> u32 {
+        let mut height = 0;
+
+        for stripe in &self.stripes {
+            height += stripe.height;
+        }
+
+        height.into()
+    }
+
     fn display(&self, width: Width) {
         let terminal_width = get_terminal_width();
+        let terminal_height = get_terminal_height();
 
         let flag_width: usize = match width {
             Width::Full => get_terminal_width(),
@@ -38,9 +49,22 @@ impl Flag {
 
         let mut flag = String::new();
 
+        // Calculate the flag height based on terminal size
+        let multiplier: f64;
+        let flag_height = self.height();
+
+        if terminal_height > flag_height.try_into().unwrap() {
+            multiplier = terminal_height as f64 / flag_height as f64;
+        } else {
+            multiplier = 1.0;
+        }
+
         // Format the flag
         for stripe in &self.stripes {
-            for _i in 0..stripe.height {
+            let stripe_height = (stripe.height as f64 * multiplier)
+                                .floor() as i32;
+
+            for _i in 0..stripe_height {
                 let stripe = format!("{}", " ".repeat(flag_width)
                                               .on_truecolor(stripe.color[0],
                                                             stripe.color[1],
@@ -104,6 +128,16 @@ fn get_terminal_width() -> usize {
     let terminal_size = terminal.size().unwrap();
 
     terminal_size.width.into()
+}
+
+fn get_terminal_height() -> usize {
+    // Set up terminal stuff to find terminal height
+    let stdout = io::stdout();
+    let backend = TermionBackend::new(stdout);
+    let terminal = Terminal::new(backend).unwrap();
+    let terminal_size = terminal.size().unwrap();
+
+    terminal_size.height.into()
 }
 
 #[derive(PartialEq)]
