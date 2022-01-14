@@ -1,0 +1,13 @@
+[package]
+name = "prideful"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tui = "0.12"
+termion = "1.5"
+colored = "2"
+json = "0.12.4"
+xdg = "^2.1"
