@@ -179,9 +179,11 @@ fn print_usage(flags: &HashMap<String, Flag>) {
     println!();
     println!("{}", "Options:".bold());
     println!("  -h, --help           display this help message");
+    println!("  -c, --compact        show a formatted flag with a nice aspect ratio");
+    println!();
+    println!("{}", "Dimensions:".bold());
     println!("  -w, --width NUMBER   set the flag width to the specified number");
     println!("  -s, --small          make the flag not take up the entire terminal height");
-    println!("  -c, --compact        show a formatted flag with a nice aspect ratio");
 
     println!();
     println!("{}", "Flags:".bold());
