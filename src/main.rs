@@ -28,7 +28,7 @@ impl Flag {
         height.into()
     }
 
-    fn display(&self, width: Width) {
+    fn display(&self, width: Width, fill_screen: bool) {
         let terminal_width = get_terminal_width();
         let terminal_height = get_terminal_height();
 
@@ -53,7 +53,7 @@ impl Flag {
         let multiplier: f64;
         let flag_height = self.height();
 
-        if terminal_height > flag_height.try_into().unwrap() {
+        if fill_screen && terminal_height > flag_height.try_into().unwrap() {
             multiplier = terminal_height as f64 / flag_height as f64;
         } else {
             multiplier = 1.0;
@@ -156,6 +156,7 @@ fn print_usage(flags: &HashMap<String, Flag>) {
     println!("{}", "Options:".bold());
     println!("  -h, --help           display this help message");
     println!("  -w, --width NUMBER   set the flag width to the specified number");
+    println!("  -s, --small          make the flag not take up the entire terminal height");
 
     println!();
     println!("{}", "Flags:".bold());
@@ -226,6 +227,12 @@ fn main() -> Result<(), io::Error> {
         None => {}
     }
 
+    let fill_screen = match env::args()
+                            .find(|arg| arg == "--small" || arg == "-s") {
+        Some(_) => false,
+        None => true
+    };
+
     // Width argument
     let flag_width: Width;
     match env::args().position(|arg| arg == "--width" || arg == "-w") {
@@ -256,7 +263,9 @@ fn main() -> Result<(), io::Error> {
     match env::args().nth(1) {
         Some(flag_name) => {
             if flags.contains_key(&flag_name) {
-                flags.get(&flag_name).unwrap().display(flag_width);
+                let flag = flags.get(&flag_name).unwrap();
+                flag.display(flag_width, fill_screen);
+
             } else {
                 print_usage(&flags);
             }
