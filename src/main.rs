@@ -28,32 +28,44 @@ impl Flag {
         height.into()
     }
 
-    fn display(&self, width: Width, fill_screen: bool) {
+    fn display(&self, width: Width, fill_screen: bool, compact: bool) {
         let terminal_width = get_terminal_width();
         let terminal_height = get_terminal_height();
+        let flag_height = self.height();
 
-        let flag_width: usize = match width {
-            Width::Full => get_terminal_width(),
-            Width::Custom(custom_width) =>  {
-                let custom_width: usize = custom_width.try_into().unwrap();
+        let flag_width: usize;
+        if !compact {
+            flag_width = match width {
+                Width::Full => get_terminal_width(),
+                Width::Custom(custom_width) =>  {
+                    let custom_width: usize = custom_width.try_into().unwrap();
 
-                // Make sure the set width doesn't exceed
-                // the terminal width
-                if terminal_width > custom_width {
-                    custom_width
-                } else {
-                    terminal_width
+                    // Make sure the set width doesn't exceed
+                    // the terminal width
+                    if terminal_width > custom_width {
+                        custom_width
+                    } else {
+                        terminal_width
+                    }
                 }
+            };
+        } else {
+            let compact_width = flag_height as usize * 4;
+
+            if terminal_width > compact_width {
+                flag_width = compact_width;
+            } else {
+                flag_width = terminal_width;
             }
-        };
+        }
 
         let mut flag = String::new();
 
         // Calculate the flag height based on terminal size
         let multiplier: f64;
-        let flag_height = self.height();
 
-        if fill_screen && terminal_height > flag_height.try_into().unwrap() {
+        if fill_screen && !compact
+        && terminal_height > flag_height.try_into().unwrap() {
             multiplier = terminal_height as f64 / flag_height as f64;
         } else {
             multiplier = 1.0;
@@ -73,7 +85,7 @@ impl Flag {
 
                 // Don't print a newline for full flags
                 // so that it blends better when terminal is resized
-                if width != Width::Full {
+                if width != Width::Full || compact {
                     flag.push('\n');
                 }
             }
@@ -157,6 +169,7 @@ fn print_usage(flags: &HashMap<String, Flag>) {
     println!("  -h, --help           display this help message");
     println!("  -w, --width NUMBER   set the flag width to the specified number");
     println!("  -s, --small          make the flag not take up the entire terminal height");
+    println!("  -c, --compact        show a formatted flag with a nice aspect ratio");
 
     println!();
     println!("{}", "Flags:".bold());
@@ -233,6 +246,12 @@ fn main() -> Result<(), io::Error> {
         None => true
     };
 
+    let compact = match env::args()
+                        .find(|arg| arg == "--compact" || arg == "-c") {
+        Some(_) => true,
+        None => false
+    };
+
     // Width argument
     let flag_width: Width;
     match env::args().position(|arg| arg == "--width" || arg == "-w") {
@@ -264,7 +283,7 @@ fn main() -> Result<(), io::Error> {
         Some(flag_name) => {
             if flags.contains_key(&flag_name) {
                 let flag = flags.get(&flag_name).unwrap();
-                flag.display(flag_width, fill_screen);
+                flag.display(flag_width, fill_screen, compact);
 
             } else {
                 print_usage(&flags);
