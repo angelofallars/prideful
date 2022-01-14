@@ -140,7 +140,7 @@ fn print_usage(flags: &HashMap<String, Flag>) {
     }
 
     println!();
-    println!("{}", "prideful v1.0.0".bold());
+    println!("{}", "prideful BETA v0.1.0".bold());
 }
 
 fn main() -> Result<(), io::Error> {
