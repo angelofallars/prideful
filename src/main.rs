@@ -216,7 +216,6 @@ fn main() -> Result<(), io::Error> {
     }
 
     // Parse CLI arguments
-    let mut args = env::args();
 
     // Help message
     match env::args().find(|arg| arg == "--help" || arg == "-h") {
@@ -229,7 +228,7 @@ fn main() -> Result<(), io::Error> {
 
     // Width argument
     let flag_width: Width;
-    match args.position(|arg| arg == "--width" || arg == "-w") {
+    match env::args().position(|arg| arg == "--width" || arg == "-w") {
         Some(index) => {
             flag_width = match env::args().nth(index + 1) {
                 Some(width) => {
@@ -254,8 +253,7 @@ fn main() -> Result<(), io::Error> {
     }
 
     // Print the flag
-    let mut args = env::args();
-    match args.nth(1) {
+    match env::args().nth(1) {
         Some(flag_name) => {
             if flags.contains_key(&flag_name) {
                 flags.get(&flag_name).unwrap().display(flag_width);
