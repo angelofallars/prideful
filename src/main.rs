@@ -161,8 +161,20 @@ enum Width {
 }
 
 fn print_usage(flags: &HashMap<String, Flag>) {
-    println!("{} prideful {} {}", "Usage:".bold(),
-             "[flag]".green(), "[args]".blue());
+    let prideful_title = format!("{}{}{}{}{}{}{}{}",
+                                 "p".bold().red(),
+                                 "r".bold().yellow(),
+                                 "i".bold().bright_green(),
+                                 "d".bold().green(),
+                                 "e".bold().cyan(),
+                                 "f".bold().blue(),
+                                 "u".bold().magenta(),
+                                 "l".bold().bright_magenta());
+    println!("{} {} {} {}",
+             "Usage:".bold(),
+             prideful_title,
+             "[flag]".green(),
+             "[args]".blue());
 
     println!();
     println!("{}", "Options:".bold());
@@ -189,6 +201,7 @@ fn print_usage(flags: &HashMap<String, Flag>) {
 
     println!();
     println!("{}", "prideful BETA v0.1.0".bold());
+    println!("Report bugs to https://github.com/angelofallars/prideful/issues")
 }
 
 fn main() -> Result<(), io::Error> {
