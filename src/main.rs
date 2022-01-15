@@ -33,6 +33,7 @@ impl Flag {
         let terminal_height = get_terminal_height();
         let flag_height = self.height();
 
+        // Calculate flag width
         let flag_width: usize;
         if !compact {
             flag_width = match width {
@@ -61,12 +62,13 @@ impl Flag {
 
         let mut flag = String::new();
 
-        // Calculate the flag height based on terminal size
+        // Calculate flag height
         let multiplier: f64;
 
         if fill_screen && !compact
         && terminal_height > flag_height.try_into().unwrap() {
-            multiplier = terminal_height as f64 / flag_height as f64;
+            multiplier = (terminal_height as f64 / flag_height as f64)
+                         .floor();
         } else {
             multiplier = 1.0;
         }
