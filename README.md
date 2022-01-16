@@ -18,6 +18,8 @@ file to your `XDG_CONFIG_HOME` directory. The path should be `~/.config/prideful
 
 ```cp -r ./config ~/.config/prideful```
 
+**Note:** This project is still in development, so bugs are to be expected. Things may also change without warning.
+
 ## Supporting this project
 
 This project is free and open-source and will always be that way.
