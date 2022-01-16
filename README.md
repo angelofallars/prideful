@@ -7,16 +7,20 @@ A CLI-based pride flag generator written in Rust.
 
 ## How to run
 
-Build the project using `cargo`. Right now you must manually **copy** the `flags.json`
-file to your `XDG_CONFIG_HOME` directory. The path should be `~/.config/prideful/flags.json`.
+Build the project using `cargo`. Install `cargo` by following the Rustup install instructions [here](https://www.rust-lang.org/learn/get-started).
 
-```git clone https://github.com/angelofallars/prideful```
+Right now you **must** manually copy the `flags.json`
+file to your `XDG_CONFIG_HOME` directory, or there will be an error. The path should be `~/.config/prideful/flags.json`.
 
-```cd prideful```
+### All steps (when `cargo` is installed)
 
-```cargo install --path .```
+- ```git clone https://github.com/angelofallars/prideful```
 
-```cp -r ./config ~/.config/prideful```
+- ```cd prideful```
+
+- ```cargo install --path .```
+
+- ```cp -r ./config ~/.config/prideful```
 
 **Note:** This project is still in development, so bugs are to be expected. Things may also change without warning.
 
