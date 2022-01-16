@@ -1,4 +1,4 @@
-# 🌈 prideful (in development)
+# 🌈 `prideful` (in development)
 
 A CLI-based pride flag generator written in Rust.
 
@@ -17,6 +17,14 @@ file to your `XDG_CONFIG_HOME` directory. The path should be `~/.config/prideful
 ```cargo install --path .```
 
 ```cp -r ./config ~/.config/prideful```
+
+## Supporting this project
+
+This project is free and open-source and will always be that way.
+
+Development takes time and resources. If you like this project, consider donating as even a small amount goes a long way.
+
+<a href="https://www.buymeacoffee.com/angelofallaria" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" width="140"></a>
 
 ## License
 
