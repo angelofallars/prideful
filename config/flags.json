@@ -1,4 +1,5 @@
 {
+
   "abro": [
     {
       "color": "#75ca92",
@@ -21,6 +22,7 @@
       "height": 2
     }
   ],
+
   "pastel": [
     {
       "color": "#F59679",
@@ -47,6 +49,7 @@
       "height": 2
     }
   ],
+
   "agen": [
     {
       "color": "#000000",
@@ -77,6 +80,7 @@
       "height": 1
     }
   ],
+
   "aro": [
     {
       "color": "#3BA740",
@@ -99,6 +103,7 @@
       "height": 2
     }
   ],
+
   "aroace": [
     {
       "color": "#e28b00",
@@ -121,6 +126,7 @@
       "height": 2
     }
   ],
+
   "ace": [
     {
       "color": "#000000",
@@ -139,6 +145,7 @@
       "height": 2
     }
   ],
+
   "bi": [
     {
       "color": "#D60270",
@@ -153,6 +160,7 @@
       "height": 4
     }
   ],
+
   "bigen": [
     {
       "color": "#C479A2",
@@ -183,6 +191,7 @@
       "height": 2
     }
   ],
+
   "classic": [
     {
       "color": "#E50000",
@@ -209,6 +218,7 @@
       "height": 2
     }
   ],
+
   "demiboy": [
     {
       "color": "#7f7f7f",
@@ -239,6 +249,7 @@
       "height": 2
     }
   ],
+
   "demigirl": [
     {
       "color": "#7f7f7f",
@@ -269,6 +280,7 @@
       "height": 2
     }
   ],
+
   "enby": [
     {
       "color": "#FCF431",
@@ -287,6 +299,7 @@
       "height": 2
     }
   ],
+
   "fluid": [
     {
       "color": "#FE76A2",
@@ -309,6 +322,7 @@
       "height": 2
     }
   ],
+
   "gay": [
     {
       "color": "#078D70",
@@ -331,6 +345,7 @@
       "height": 2
     }
   ],
+
   "les": [
     {
       "color": "#D62800",
@@ -353,6 +368,7 @@
       "height": 2
     }
   ],
+
   "neutrois": [
     {
       "color": "#FFFFFF",
@@ -367,6 +383,7 @@
       "height": 4
     }
   ],
+
   "pan": [
     {
       "color": "#FF1C8D",
@@ -381,6 +398,7 @@
       "height": 4
     }
   ],
+
   "polysex": [
     {
       "color": "#f200b8",
@@ -395,6 +413,7 @@
       "height": 4
     }
   ],
+
   "queer": [
     {
       "color": "#B57FDD",
@@ -409,6 +428,7 @@
       "height": 4
     }
   ],
+
   "trans": [
     {
       "color": "#5BCFFB",
@@ -431,6 +451,7 @@
       "height": 2
     }
   ],
+
   "trigen": [
     {
       "color": "#ff95c4",
@@ -453,4 +474,5 @@
       "height": 2
     }
   ]
+
 }
