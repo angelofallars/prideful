@@ -24,6 +24,12 @@ file to your `XDG_CONFIG_HOME` directory, or there will be an error. The path sh
 
 **Note:** This project is still in development, so bugs are to be expected. Things may also change without warning.
 
+## Contributors
+
+<a href="https://github.com/angelofallars/prideful/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=angelofallars/prideful" />
+</a>
+
 ## Supporting this project
 
 This project is free and open-source and will always be that way.
