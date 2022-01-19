@@ -311,15 +311,11 @@
   ],
   "gay": [
     {
-      "color": "#238d70",
+      "color": "#078D70",
       "height": 2
     },
     {
-      "color": "#3ecea9",
-      "height": 2
-    },
-    {
-      "color": "#9be8c0",
+      "color": "#98E8C1",
       "height": 2
     },
     {
@@ -327,15 +323,11 @@
       "height": 2
     },
     {
-      "color": "#7faae0",
+      "color": "#7BADE2",
       "height": 2
     },
     {
-      "color": "#5643c9",
-      "height": 2
-    },
-    {
-      "color": "#411876",
+      "color": "#3D1A78",
       "height": 2
     }
   ],
