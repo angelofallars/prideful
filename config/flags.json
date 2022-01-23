@@ -219,6 +219,25 @@
     }
   ],
 
+  "dababy": [
+    {
+      "color": "#3477db",
+      "height": 2
+    },
+    {
+      "color": "#60300f",
+      "height": 2
+    },
+    {
+      "color": "#ffffff",
+      "height": 2
+    },
+    {
+      "color": "#f7c80e",
+      "height": 2
+    }
+  ],
+  
   "demiboy": [
     {
       "color": "#7f7f7f",
