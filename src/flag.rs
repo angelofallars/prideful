@@ -1,16 +1,17 @@
+use colored::*;
 use std::io;
 use tui::backend::TermionBackend;
 use tui::Terminal;
-use colored::*;
 
 #[derive(Debug)]
 pub struct Flag {
+    name: String,
     stripes: Vec<Stripe>,
 }
 
 impl Flag {
-    pub fn new(stripes: Vec<Stripe>) -> Flag {
-        Flag { stripes }
+    pub fn new(name: String, stripes: Vec<Stripe>) -> Flag {
+        Flag { name, stripes }
     }
 
     fn height(&self) -> u32 {
@@ -158,4 +159,3 @@ pub enum Width {
     // Arbitrary width
     Custom(u32),
 }
-

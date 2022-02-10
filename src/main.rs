@@ -109,33 +109,9 @@ fn main() -> Result<(), io::Error> {
             stripes.push(stripe);
         }
 
-        let flag = Flag::new(stripes);
-
+        let flag = Flag::new(name.to_string(), stripes);
         flags.insert(name.to_string(), flag);
     }
-
-    // Parse CLI arguments
-
-    let app = App::new("prideful")
-        .version("0.1")
-        .author("Angelo Fallaria <ba.fallaria@gmail.com>")
-        .about("A configurable TUI Pride flag generator.")
-        .arg(
-            Arg::with_name("width")
-                .short("w")
-                .long("width")
-                .takes_value(true)
-                .help("Width of the flag in terms of terminal blocks."),
-        )
-        .arg(
-            Arg::with_name("compact")
-                .short("c")
-                .long("compact")
-                .help("Print a smaller version of the flag."),
-        )
-        .arg(Arg::with_name("flag").takes_value(true).required(true));
-
-    let matches = app.get_matches();
 
     let compact = matches.is_present("compact");
 
