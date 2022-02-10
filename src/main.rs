@@ -1,10 +1,10 @@
+use clap::{App, Arg};
+use colored::*;
+use std::collections::HashMap;
 use std::fs;
 use std::io;
-use std::collections::HashMap;
-use tui::Terminal;
 use tui::backend::TermionBackend;
-use colored::*;
-use clap::{Arg, App};
+use tui::Terminal;
 extern crate clap;
 
 #[derive(Debug)]
@@ -13,10 +13,8 @@ struct Flag {
 }
 
 impl Flag {
-    fn new (stripes: Vec<Stripe>) -> Flag {
-        Flag {
-            stripes,
-        }
+    fn new(stripes: Vec<Stripe>) -> Flag {
+        Flag { stripes }
     }
 
     fn height(&self) -> u32 {
@@ -39,7 +37,7 @@ impl Flag {
         if !compact {
             flag_width = match width {
                 Width::Full => get_terminal_width(),
-                Width::Custom(custom_width) =>  {
+                Width::Custom(custom_width) => {
                     let custom_width: usize = custom_width.try_into().unwrap();
 
                     // Make sure the set width doesn't exceed
@@ -66,24 +64,25 @@ impl Flag {
         // Calculate flag height
         let multiplier: f64;
 
-        if !compact
-        && terminal_height > flag_height.try_into().unwrap() {
-            multiplier = (terminal_height as f64 / flag_height as f64)
-                         .floor();
+        if !compact && terminal_height > flag_height.try_into().unwrap() {
+            multiplier = (terminal_height as f64 / flag_height as f64).floor();
         } else {
             multiplier = 1.0;
         }
 
         // Format the flag
         for stripe in &self.stripes {
-            let stripe_height = (stripe.height as f64 * multiplier)
-                                .floor() as i32;
+            let stripe_height = (stripe.height as f64 * multiplier).floor() as i32;
 
             for _i in 0..stripe_height {
-                let stripe = format!("{}", " ".repeat(flag_width)
-                                              .on_truecolor(stripe.color[0],
-                                                            stripe.color[1],
-                                                            stripe.color[2]));
+                let stripe = format!(
+                    "{}",
+                    " ".repeat(flag_width).on_truecolor(
+                        stripe.color[0],
+                        stripe.color[1],
+                        stripe.color[2]
+                    )
+                );
                 flag.push_str(&stripe);
 
                 // Don't print a newline for full flags
@@ -105,10 +104,11 @@ impl Flag {
         let mut flag: String = String::new();
 
         for stripe in &self.stripes {
-                let stripe = format!("{}", "▆".truecolor(stripe.color[0],
-                                                         stripe.color[1],
-                                                         stripe.color[2]));
-                flag.push_str(&stripe);
+            let stripe = format!(
+                "{}",
+                "▆".truecolor(stripe.color[0], stripe.color[1], stripe.color[2])
+            );
+            flag.push_str(&stripe);
         }
 
         flag
@@ -119,7 +119,7 @@ impl Flag {
 #[derive(Debug)]
 struct Stripe {
     color: [u8; 3],
-    height: u8
+    height: u8,
 }
 
 impl Stripe {
@@ -130,7 +130,7 @@ impl Stripe {
 
         Stripe {
             color: [red, green, blue],
-            height
+            height,
         }
     }
 }
@@ -160,24 +160,28 @@ enum Width {
     // Entire terminal
     Full,
     // Arbitrary width
-    Custom(u32)
+    Custom(u32),
 }
 
 fn print_usage(flags: &HashMap<String, Flag>) {
-    let prideful_title = format!("{}{}{}{}{}{}{}{}",
-                                 "p".bold().red(),
-                                 "r".bold().yellow(),
-                                 "i".bold().bright_green(),
-                                 "d".bold().green(),
-                                 "e".bold().cyan(),
-                                 "f".bold().blue(),
-                                 "u".bold().magenta(),
-                                 "l".bold().bright_magenta());
-    println!("{} {} {} {}",
-             "Usage:".bold(),
-             prideful_title,
-             "[flag]".green(),
-             "[args]".blue());
+    let prideful_title = format!(
+        "{}{}{}{}{}{}{}{}",
+        "p".bold().red(),
+        "r".bold().yellow(),
+        "i".bold().bright_green(),
+        "d".bold().green(),
+        "e".bold().cyan(),
+        "f".bold().blue(),
+        "u".bold().magenta(),
+        "l".bold().bright_magenta()
+    );
+    println!(
+        "{} {} {} {}",
+        "Usage:".bold(),
+        prideful_title,
+        "[flag]".green(),
+        "[args]".blue()
+    );
 
     println!();
     println!("{}", "Options:".bold());
@@ -210,21 +214,19 @@ fn print_usage(flags: &HashMap<String, Flag>) {
 }
 
 fn main() -> Result<(), io::Error> {
-
     // Detect the flags.json file in ~/.config/prideful
     // If no file or no directory, make them
     // Open JSON file
     let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
-    let flags_json_path = xdg_dir.find_config_file("flags.json")
-                                 .expect("flags.json file not found");
+    let flags_json_path = xdg_dir
+        .find_config_file("flags.json")
+        .expect("flags.json file not found");
 
-    let flags_json_str: String = String::from_utf8_lossy(
-                                 &fs::read(flags_json_path)
-                                 .expect("Could not read flags.json"))
-                                 .to_string();
+    let flags_json_str: String =
+        String::from_utf8_lossy(&fs::read(flags_json_path).expect("Could not read flags.json"))
+            .to_string();
 
-    let flags_json = json::parse(&flags_json_str)
-                          .expect("Error in parsing flags.json file");
+    let flags_json = json::parse(&flags_json_str).expect("Error in parsing flags.json file");
 
     // Parse JSON config and store the flags in a hashmap
     let mut flags: HashMap<String, Flag> = HashMap::new();
@@ -235,8 +237,8 @@ fn main() -> Result<(), io::Error> {
         for i in 0..data.len() {
             let color = data[i]["color"].to_string();
             let height: u8 = data[i]["height"]
-                             .as_u8()
-                             .expect("height in flags.json is invalid");
+                .as_u8()
+                .expect("height in flags.json is invalid");
 
             let stripe = Stripe::new(&color, height);
             stripes.push(stripe);
@@ -250,21 +252,23 @@ fn main() -> Result<(), io::Error> {
     // Parse CLI arguments
 
     let app = App::new("prideful")
-                        .version("0.1")
-                        .author("Angelo Fallaria <ba.fallaria@gmail.com>")
-                        .about("A configurable TUI Pride flag generator.")
-                        .arg(Arg::with_name("width")
-                             .short("w")
-                             .long("width")
-                             .takes_value(true)
-                             .help("Width of the flag in terms of terminal blocks."))
-                        .arg(Arg::with_name("compact")
-                             .short("c")
-                             .long("compact")
-                             .help("Print a smaller version of the flag."))
-                        .arg(Arg::with_name("flag")
-                             .takes_value(true)
-                             .required(true));
+        .version("0.1")
+        .author("Angelo Fallaria <ba.fallaria@gmail.com>")
+        .about("A configurable TUI Pride flag generator.")
+        .arg(
+            Arg::with_name("width")
+                .short("w")
+                .long("width")
+                .takes_value(true)
+                .help("Width of the flag in terms of terminal blocks."),
+        )
+        .arg(
+            Arg::with_name("compact")
+                .short("c")
+                .long("compact")
+                .help("Print a smaller version of the flag."),
+        )
+        .arg(Arg::with_name("flag").takes_value(true).required(true));
 
     let matches = app.get_matches();
 
