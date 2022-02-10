@@ -58,6 +58,27 @@ fn print_usage(flags: &HashMap<String, Flag>) {
 }
 
 fn main() -> Result<(), io::Error> {
+    let app = App::new("prideful")
+        .version("0.1")
+        .author("Angelo Fallaria <ba.fallaria@gmail.com>")
+        .about("A configurable TUI Pride flag generator.")
+        .arg(
+            Arg::with_name("width")
+                .short("w")
+                .long("width")
+                .takes_value(true)
+                .help("Width of the flag in terms of terminal blocks."),
+        )
+        .arg(
+            Arg::with_name("compact")
+                .short("c")
+                .long("compact")
+                .help("Print a smaller version of the flag."),
+        )
+        .arg(Arg::with_name("flag").takes_value(true).required(true));
+
+    let matches = app.get_matches();
+
     // Detect the flags.json file in ~/.config/prideful
     // If no file or no directory, make them
     // Open JSON file
