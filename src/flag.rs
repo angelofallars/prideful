@@ -5,7 +5,7 @@ use tui::Terminal;
 
 #[derive(Debug)]
 pub struct Flag {
-    name: String,
+    pub name: String,
     stripes: Vec<Stripe>,
 }
 

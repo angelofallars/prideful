@@ -93,8 +93,8 @@ fn main() -> Result<(), io::Error> {
 
     let flags_json = json::parse(&flags_json_str).expect("Error in parsing flags.json file");
 
-    // Parse JSON config and store the flags in a hashmap
-    let mut flags: HashMap<String, Flag> = HashMap::new();
+    // Parse JSON config and store the flags in a vector
+    let mut flags: Vec<Flag> = Vec::new();
 
     for (name, data) in flags_json.entries() {
         let mut stripes: Vec<Stripe> = Vec::new();
@@ -110,7 +110,7 @@ fn main() -> Result<(), io::Error> {
         }
 
         let flag = Flag::new(name.to_string(), stripes);
-        flags.insert(name.to_string(), flag);
+        flags.push(flag);
     }
 
     let compact = matches.is_present("compact");
@@ -128,8 +128,12 @@ fn main() -> Result<(), io::Error> {
 
     let flag_name: String = matches.value_of("flag").unwrap().to_string();
 
-    let flag = flags.get(&flag_name).unwrap();
-    flag.display(flag_width, compact);
+    if let Some(index) = flags.iter().position(|flag| flag.name == flag_name) {
+        flags[index].display(flag_width, compact);
+    } else {
+        println!("Error: Unknown flag name `{}`", flag_name);
+        return Ok(());
+    }
 
     Ok(())
 }
