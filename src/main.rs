@@ -74,11 +74,21 @@ fn main() -> Result<(), io::Error> {
                 .long("compact")
                 .help("Print a smaller version of the flag."),
         )
+        .arg(
+            Arg::with_name("config")
+                .short("c")
+                .long("config")
+                .takes_value(true)
+                .help("Path of the configuration file to use."),
+        )
         .arg(Arg::with_name("flag").takes_value(true).required(true));
 
     let matches = app.get_matches();
 
-    let flags = config::load_config().unwrap();
+    let flags = match matches.value_of("config") {
+        Some(path) => config::load_config_from_path(path).unwrap(),
+        None => config::load_config().unwrap()
+    };
 
     let compact = matches.is_present("compact");
 

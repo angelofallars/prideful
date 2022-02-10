@@ -1,8 +1,10 @@
 use std::fs;
+use std::path;
 use crate::flag;
 
 #[derive(Debug)]
 pub enum Error {
+    FileNotFound,
     JsonError
 }
 
@@ -17,6 +19,14 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
 
     let flags_json_str: String =
         String::from_utf8_lossy(&fs::read(flags_json_path).expect("Could not read flags.json"))
+            .to_string();
+
+    parse_config(flags_json_str)
+}
+
+pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
+    let flags_json_str: String =
+        String::from_utf8_lossy(&fs::read(path).expect("Could not read file"))
             .to_string();
 
     parse_config(flags_json_str)
