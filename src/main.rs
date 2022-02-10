@@ -1,10 +1,11 @@
 use std::fs;
 use std::io;
 use std::collections::HashMap;
-use std::env;
 use tui::Terminal;
 use tui::backend::TermionBackend;
 use colored::*;
+use clap::{Arg, App};
+extern crate clap;
 
 #[derive(Debug)]
 struct Flag {
@@ -28,7 +29,7 @@ impl Flag {
         height.into()
     }
 
-    fn display(&self, width: Width, fill_screen: bool, compact: bool) {
+    fn display(&self, width: Width, compact: bool) {
         let terminal_width = get_terminal_width();
         let terminal_height = get_terminal_height();
         let flag_height = self.height();
@@ -65,7 +66,7 @@ impl Flag {
         // Calculate flag height
         let multiplier: f64;
 
-        if fill_screen && !compact
+        if !compact
         && terminal_height > flag_height.try_into().unwrap() {
             multiplier = (terminal_height as f64 / flag_height as f64)
                          .floor();
@@ -248,68 +249,42 @@ fn main() -> Result<(), io::Error> {
 
     // Parse CLI arguments
 
-    // Help message
-    match env::args().find(|arg| arg == "--help" || arg == "-h") {
-        Some(_) => {
-            print_usage(&flags);
-            return Ok(());
-        },
-        None => {}
-    }
+    let app = App::new("prideful")
+                        .version("0.1")
+                        .author("Angelo Fallaria <ba.fallaria@gmail.com>")
+                        .about("A configurable TUI Pride flag generator.")
+                        .arg(Arg::with_name("width")
+                             .short("w")
+                             .long("width")
+                             .takes_value(true)
+                             .help("Width of the flag in terms of terminal blocks."))
+                        .arg(Arg::with_name("compact")
+                             .short("c")
+                             .long("compact")
+                             .help("Print a smaller version of the flag."))
+                        .arg(Arg::with_name("flag")
+                             .takes_value(true)
+                             .required(true));
 
-    let fill_screen = match env::args()
-                            .find(|arg| arg == "--small" || arg == "-s") {
-        Some(_) => false,
-        None => true
-    };
+    let matches = app.get_matches();
 
-    let compact = match env::args()
-                        .find(|arg| arg == "--compact" || arg == "-c") {
-        Some(_) => true,
-        None => false
-    };
+    let compact = matches.is_present("compact");
 
-    // Width argument
-    let flag_width: Width;
-    match env::args().position(|arg| arg == "--width" || arg == "-w") {
-        Some(index) => {
-            flag_width = match env::args().nth(index + 1) {
-                Some(width) => {
-                    let width_result = width.parse::<u32>();
-
-                    if width_result.is_ok() {
-                        Width::Custom(width_result.unwrap())
-                    } else {
-                        print_usage(&flags);
-                        return Ok(());
-                    }
-                },
-                None => {
-                    print_usage(&flags);
-                    return Ok(());
-                }
-            };
-        },
-        None => {
-            flag_width = Width::Full;
-        }
-    }
-
-    // Print the flag
-    match env::args().nth(1) {
-        Some(flag_name) => {
-            if flags.contains_key(&flag_name) {
-                let flag = flags.get(&flag_name).unwrap();
-                flag.display(flag_width, fill_screen, compact);
-
-            } else {
-                print_usage(&flags);
+    let flag_width: Width = match matches.value_of("width") {
+        Some(value) => match value.parse() {
+            Ok(number) => Width::Custom(number),
+            Err(..) => {
+                println!("Error: you must specify the width argument a numeric value.");
+                return Ok(());
             }
-        }
-        None => {
-            print_usage(&flags);
-        }
-    }
+        },
+        None => Width::Full,
+    };
+
+    let flag_name: String = matches.value_of("flag").unwrap().to_string();
+
+    let flag = flags.get(&flag_name).unwrap();
+    flag.display(flag_width, compact);
 
     Ok(())
 }
