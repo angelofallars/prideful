@@ -71,7 +71,6 @@ fn main() -> Result<(), io::Error> {
         )
         .arg(
             Arg::with_name("compact")
-                .short("c")
                 .long("compact")
                 .help("Print a smaller version of the flag."),
         )
