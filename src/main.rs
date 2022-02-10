@@ -1,10 +1,10 @@
 use clap::{App, Arg};
 use colored::*;
 use std::collections::HashMap;
-use std::fs;
 use std::io;
 extern crate clap;
 mod flag;
+mod config;
 use crate::flag::{Flag, Width, Stripe};
 
 fn print_usage(flags: &HashMap<String, Flag>) {
@@ -79,39 +79,7 @@ fn main() -> Result<(), io::Error> {
 
     let matches = app.get_matches();
 
-    // Detect the flags.json file in ~/.config/prideful
-    // If no file or no directory, make them
-    // Open JSON file
-    let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
-    let flags_json_path = xdg_dir
-        .find_config_file("flags.json")
-        .expect("flags.json file not found");
-
-    let flags_json_str: String =
-        String::from_utf8_lossy(&fs::read(flags_json_path).expect("Could not read flags.json"))
-            .to_string();
-
-    let flags_json = json::parse(&flags_json_str).expect("Error in parsing flags.json file");
-
-    // Parse JSON config and store the flags in a vector
-    let mut flags: Vec<Flag> = Vec::new();
-
-    for (name, data) in flags_json.entries() {
-        let mut stripes: Vec<Stripe> = Vec::new();
-
-        for i in 0..data.len() {
-            let color = data[i]["color"].to_string();
-            let height: u8 = data[i]["height"]
-                .as_u8()
-                .expect("height in flags.json is invalid");
-
-            let stripe = Stripe::new(&color, height);
-            stripes.push(stripe);
-        }
-
-        let flag = Flag::new(name.to_string(), stripes);
-        flags.push(flag);
-    }
+    let flags = config::load_config().unwrap();
 
     let compact = matches.is_present("compact");
 
