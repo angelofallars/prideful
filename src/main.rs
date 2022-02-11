@@ -3,9 +3,9 @@ use colored::*;
 use std::collections::HashMap;
 use std::io;
 extern crate clap;
-mod flag;
 mod config;
-use crate::flag::{Flag, Width, Stripe};
+mod flag;
+use crate::flag::{Flag, Stripe, Width};
 
 fn main() -> Result<(), io::Error> {
     let app = App::new("prideful")
@@ -37,13 +37,17 @@ fn main() -> Result<(), io::Error> {
                 .long("list")
                 .help("List available flags."),
         )
-        .arg(Arg::with_name("flag").takes_value(true).required_unless("list"));
+        .arg(
+            Arg::with_name("flag")
+                .takes_value(true)
+                .required_unless("list"),
+        );
 
     let matches = app.get_matches();
 
     let flags = match matches.value_of("config") {
         Some(path) => config::load_config_from_path(path).unwrap(),
-        None => config::load_config().unwrap()
+        None => config::load_config().unwrap(),
     };
 
     if matches.is_present("list") {
@@ -85,4 +89,3 @@ fn print_flags(flags: &Vec<Flag>) {
         println!("  {: <9} {}", flag.name, mini_flag);
     }
 }
-

@@ -1,7 +1,7 @@
-use std::fs;
-use std::path;
-use std::io::Write;
 use crate::flag;
+use std::fs;
+use std::io::Write;
+use std::path;
 
 mod default {
     pub const DEFAULT_CONFIG: &str = r##"
@@ -489,7 +489,7 @@ mod default {
 #[derive(Debug)]
 pub enum Error {
     FileNotFound,
-    JsonError
+    JsonError,
 }
 
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
@@ -501,16 +501,15 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
     let flags_json_path = match xdg_dir.find_config_file("flags.json") {
         Some(path) => path,
         None => {
-            let path = xdg_dir.place_config_file("flags.json")
-                              .expect("Cannot create config directory");
+            let path = xdg_dir
+                .place_config_file("flags.json")
+                .expect("Cannot create config directory");
 
-            fs::write(&path, default::DEFAULT_CONFIG)
-                .expect("Could not write default config");
+            fs::write(&path, default::DEFAULT_CONFIG).expect("Could not write default config");
 
             path
         }
     };
-
 
     let flags_json_str: String =
         String::from_utf8_lossy(&fs::read(flags_json_path).expect("Could not read flags.json"))
@@ -521,8 +520,7 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
 
 pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
     let flags_json_str: String =
-        String::from_utf8_lossy(&fs::read(path).expect("Could not read file"))
-            .to_string();
+        String::from_utf8_lossy(&fs::read(path).expect("Could not read file")).to_string();
 
     parse_config(flags_json_str)
 }
