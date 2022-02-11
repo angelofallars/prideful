@@ -7,54 +7,11 @@ mod flag;
 mod config;
 use crate::flag::{Flag, Width, Stripe};
 
-fn print_usage(flags: &HashMap<String, Flag>) {
-    let prideful_title = format!(
-        "{}{}{}{}{}{}{}{}",
-        "p".bold().red(),
-        "r".bold().yellow(),
-        "i".bold().bright_green(),
-        "d".bold().green(),
-        "e".bold().cyan(),
-        "f".bold().blue(),
-        "u".bold().magenta(),
-        "l".bold().bright_magenta()
-    );
-    println!(
-        "{} {} {} {}",
-        "Usage:".bold(),
-        prideful_title,
-        "[flag]".green(),
-        "[args]".blue()
-    );
-
-    println!();
-    println!("{}", "Options:".bold());
-    println!("  -h, --help           display this help message");
-    println!("  -c, --compact        show a formatted flag with a nice aspect ratio");
-    println!();
-    println!("{}", "Dimensions:".bold());
-    println!("  -w, --width NUMBER   set the flag width to the specified number");
-    println!("  -s, --small          make the flag not take up the entire terminal height");
-
-    println!();
-    println!("{}", "Flags:".bold());
-
-    // This long vector algorithm is necessary to sort the flags by name
-    let mut flag_names: Vec<String> = Vec::new();
-    for (flag_name, _flag) in flags {
-        flag_names.push(flag_name.to_string());
+fn print_flags(flags: &Vec<Flag>) {
+    for flag in flags {
+        let mini_flag = flag.show_mini();
+        println!("  {: <9} {}", flag.name, mini_flag);
     }
-
-    flag_names.sort();
-
-    for flag_name in flag_names {
-        let mini_flag = flags.get(&flag_name).unwrap().show_mini();
-        println!("  {: <9} {}", flag_name, mini_flag);
-    }
-
-    println!();
-    println!("{}", "prideful BETA v0.1.0".bold());
-    println!("Report bugs to https://github.com/angelofallars/prideful/issues")
 }
 
 fn main() -> Result<(), io::Error> {
@@ -81,7 +38,13 @@ fn main() -> Result<(), io::Error> {
                 .takes_value(true)
                 .help("Path of the configuration file to use."),
         )
-        .arg(Arg::with_name("flag").takes_value(true).required(true));
+        .arg(
+            Arg::with_name("list")
+                .short("l")
+                .long("list")
+                .help("List available flags."),
+        )
+        .arg(Arg::with_name("flag").takes_value(true).required_unless("list"));
 
     let matches = app.get_matches();
 
@@ -89,6 +52,12 @@ fn main() -> Result<(), io::Error> {
         Some(path) => config::load_config_from_path(path).unwrap(),
         None => config::load_config().unwrap()
     };
+
+    if matches.is_present("list") {
+        println!("List of flags:");
+        print_flags(&flags);
+        return Ok(());
+    }
 
     let compact = matches.is_present("compact");
 
@@ -109,6 +78,8 @@ fn main() -> Result<(), io::Error> {
         flags[index].display(flag_width, compact);
     } else {
         println!("Error: Unknown flag name `{}`", flag_name);
+        println!("List of available flags:");
+        print_flags(&flags);
         return Ok(());
     }
 
