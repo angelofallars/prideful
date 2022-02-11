@@ -7,13 +7,6 @@ mod flag;
 mod config;
 use crate::flag::{Flag, Width, Stripe};
 
-fn print_flags(flags: &Vec<Flag>) {
-    for flag in flags {
-        let mini_flag = flag.show_mini();
-        println!("  {: <9} {}", flag.name, mini_flag);
-    }
-}
-
 fn main() -> Result<(), io::Error> {
     let app = App::new("prideful")
         .version("0.1")
@@ -85,3 +78,11 @@ fn main() -> Result<(), io::Error> {
 
     Ok(())
 }
+
+fn print_flags(flags: &Vec<Flag>) {
+    for flag in flags {
+        let mini_flag = flag.show_mini();
+        println!("  {: <9} {}", flag.name, mini_flag);
+    }
+}
+
