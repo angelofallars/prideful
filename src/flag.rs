@@ -111,6 +111,11 @@ impl Flag {
     }
 }
 
+#[derive(Debug)]
+pub enum Error {
+    InvalidColor
+}
+
 // Individual stripe in a flag
 #[derive(Debug)]
 pub struct Stripe {
@@ -119,15 +124,20 @@ pub struct Stripe {
 }
 
 impl Stripe {
-    pub fn new(color: &str, height: u8) -> Stripe {
+    pub fn from(color: &str, height: u8) -> Result<Stripe, Error> {
+        // Required format: #xxxxxx
+        if color.len() != 7 || color.chars().next().unwrap() != '#' {
+            return Err(Error::InvalidColor);
+        }
+
         let red = u8::from_str_radix(&color[1..3], 16).unwrap();
         let green = u8::from_str_radix(&color[3..5], 16).unwrap();
         let blue = u8::from_str_radix(&color[5..7], 16).unwrap();
 
-        Stripe {
+        Ok(Stripe {
             color: [red, green, blue],
             height,
-        }
+        })
     }
 }
 

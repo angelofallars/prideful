@@ -1,487 +1,10 @@
 use crate::flag;
 use std::fs;
 use std::io;
+extern crate yaml_rust;
 
 mod default {
     pub const DEFAULT_CONFIG: &str = r##"
-{
-
-  "abro": [
-    {
-      "color": "#75ca92",
-      "height": 2
-    },
-    {
-      "color": "#b2e4c5",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#e695b5",
-      "height": 2
-    },
-    {
-      "color": "#da446c",
-      "height": 2
-    }
-  ],
-
-  "pastel": [
-    {
-      "color": "#F59679",
-      "height": 2
-    },
-    {
-      "color": "#F9CE7B",
-      "height": 2
-    },
-    {
-      "color": "#FCF37C",
-      "height": 2
-    },
-    {
-      "color": "#9FFD7C",
-      "height": 2
-    },
-    {
-      "color": "#7BA1FB",
-      "height": 2
-    },
-    {
-      "color": "#AC7CFA",
-      "height": 2
-    }
-  ],
-
-  "agen": [
-    {
-      "color": "#000000",
-      "height": 1
-    },
-    {
-      "color": "#BABABA",
-      "height": 1
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 1
-    },
-    {
-      "color": "#BAF484",
-      "height": 1
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 1
-    },
-    {
-      "color": "#BABABA",
-      "height": 1
-    },
-    {
-      "color": "#000000",
-      "height": 1
-    }
-  ],
-
-  "aro": [
-    {
-      "color": "#3BA740",
-      "height": 2
-    },
-    {
-      "color": "#A8D47A",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#ABABAB",
-      "height": 2
-    },
-    {
-      "color": "#000000",
-      "height": 2
-    }
-  ],
-
-  "aroace": [
-    {
-      "color": "#e28b00",
-      "height": 2
-    },
-    {
-      "color": "#eaca00",
-      "height": 2
-    },
-    {
-      "color": "#ffffff",
-      "height": 2
-    },
-    {
-      "color": "#63addc",
-      "height": 2
-    },
-    {
-      "color": "#213555",
-      "height": 2
-    }
-  ],
-
-  "ace": [
-    {
-      "color": "#000000",
-      "height": 2
-    },
-    {
-      "color": "#A4A4A4",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#810081",
-      "height": 2
-    }
-  ],
-
-  "bi": [
-    {
-      "color": "#D60270",
-      "height": 4
-    },
-    {
-      "color": "#9B4F96",
-      "height": 3
-    },
-    {
-      "color": "#0038A8",
-      "height": 4
-    }
-  ],
-
-  "bigen": [
-    {
-      "color": "#C479A2",
-      "height": 2
-    },
-    {
-      "color": "#EDA5CD",
-      "height": 2
-    },
-    {
-      "color": "#D5C7E8",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#D5C7E8",
-      "height": 2
-    },
-    {
-      "color": "#9AC7E8",
-      "height": 2
-    },
-    {
-      "color": "#6D82D1",
-      "height": 2
-    }
-  ],
-
-  "classic": [
-    {
-      "color": "#E50000",
-      "height": 2
-    },
-    {
-      "color": "#FF8D00",
-      "height": 2
-    },
-    {
-      "color": "#FFEE00",
-      "height": 2
-    },
-    {
-      "color": "#028121",
-      "height": 2
-    },
-    {
-      "color": "#004CFF",
-      "height": 2
-    },
-    {
-      "color": "#770088",
-      "height": 2
-    }
-  ],
-
-  "demiboy": [
-    {
-      "color": "#7f7f7f",
-      "height": 2
-    },
-    {
-      "color": "#c4c4c4",
-      "height": 2
-    },
-    {
-      "color": "#9fd9eb",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#9fd9eb",
-      "height": 2
-    },
-    {
-      "color": "#c4c4c4",
-      "height": 2
-    },
-    {
-      "color": "#7f7f7f",
-      "height": 2
-    }
-  ],
-
-  "demigirl": [
-    {
-      "color": "#7f7f7f",
-      "height": 2
-    },
-    {
-      "color": "#c4c4c4",
-      "height": 2
-    },
-    {
-      "color": "#fcadc9",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#fcadc9",
-      "height": 2
-    },
-    {
-      "color": "#c4c4c4",
-      "height": 2
-    },
-    {
-      "color": "#7f7f7f",
-      "height": 2
-    }
-  ],
-
-  "enby": [
-    {
-      "color": "#FCF431",
-      "height": 2
-    },
-    {
-      "color": "#FCFCFC",
-      "height": 2
-    },
-    {
-      "color": "#9D59D2",
-      "height": 2
-    },
-    {
-      "color": "#282828",
-      "height": 2
-    }
-  ],
-
-  "fluid": [
-    {
-      "color": "#FE76A2",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#BF12D7",
-      "height": 2
-    },
-    {
-      "color": "#000000",
-      "height": 2
-    },
-    {
-      "color": "#303CBE",
-      "height": 2
-    }
-  ],
-
-  "gay": [
-    {
-      "color": "#078D70",
-      "height": 2
-    },
-    {
-      "color": "#98E8C1",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#7BADE2",
-      "height": 2
-    },
-    {
-      "color": "#3D1A78",
-      "height": 2
-    }
-  ],
-
-  "les": [
-    {
-      "color": "#D62800",
-      "height": 2
-    },
-    {
-      "color": "#FF9B56",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#D462A6",
-      "height": 2
-    },
-    {
-      "color": "#A40062",
-      "height": 2
-    }
-  ],
-
-  "neutrois": [
-    {
-      "color": "#FFFFFF",
-      "height": 4
-    },
-    {
-      "color": "#2f9d1d",
-      "height": 4
-    },
-    {
-      "color": "#000000",
-      "height": 4
-    }
-  ],
-
-  "pan": [
-    {
-      "color": "#FF1C8D",
-      "height": 4
-    },
-    {
-      "color": "#FFD700",
-      "height": 4
-    },
-    {
-      "color": "#1AB3FF",
-      "height": 4
-    }
-  ],
-
-  "polysex": [
-    {
-      "color": "#f200b8",
-      "height": 4
-    },
-    {
-      "color": "#2dd76b",
-      "height": 4
-    },
-    {
-      "color": "#398ef5",
-      "height": 4
-    }
-  ],
-
-  "queer": [
-    {
-      "color": "#B57FDD",
-      "height": 4
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 4
-    },
-    {
-      "color": "#49821E",
-      "height": 4
-    }
-  ],
-
-  "trans": [
-    {
-      "color": "#5BCFFB",
-      "height": 2
-    },
-    {
-      "color": "#F5ABB9",
-      "height": 2
-    },
-    {
-      "color": "#FFFFFF",
-      "height": 2
-    },
-    {
-      "color": "#F5ABB9",
-      "height": 2
-    },
-    {
-      "color": "#5BCFFB",
-      "height": 2
-    }
-  ],
-
-  "trigen": [
-    {
-      "color": "#ff95c4",
-      "height": 2
-    },
-    {
-      "color": "#9581fe",
-      "height": 2
-    },
-    {
-      "color": "#67d965",
-      "height": 2
-    },
-    {
-      "color": "#9581fe",
-      "height": 2
-    },
-    {
-      "color": "#ff95c4",
-      "height": 2
-    }
-  ]
-
-}
         "##;
 }
 
@@ -489,7 +12,15 @@ mod default {
 pub enum Error {
     FileNotFound,
     Io(io::Error),
-    Json(json::Error),
+    Yaml(yaml_rust::ScanError),
+    ParseError(ParseError)
+}
+
+#[derive(Debug)]
+pub enum ParseError {
+    FieldNotFound(String),
+    InvalidCollectionType,
+    InvalidColor { flag_name: String, color: String }
 }
 
 impl From<std::io::Error> for Error {
@@ -502,20 +33,20 @@ impl From<std::io::Error> for Error {
     }
 }
 
-impl From<json::Error> for Error {
-    fn from(val: json::Error) -> Self {
-        Error::Json(val)
+impl From<yaml_rust::ScanError> for Error {
+    fn from(val: yaml_rust::ScanError) -> Self {
+        Error::Yaml(val)
     }
 }
 
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
     let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
 
-    let flags_json_path = match xdg_dir.find_config_file("flags.json") {
+    let flags_json_path = match xdg_dir.find_config_file("flags.yml") {
         Some(path) => path,
         None => {
             // If no file found, place the default config
-            let path = xdg_dir.place_config_file("flags.json")?;
+            let path = xdg_dir.place_config_file("flags.yml")?;
 
             fs::write(&path, default::DEFAULT_CONFIG)?;
 
@@ -535,24 +66,49 @@ pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
 }
 
 fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
-    let flags_json = json::parse(&contents)?;
+    // Parse the YAML file
+    let yaml_file = &yaml_rust::YamlLoader::load_from_str(&contents)?[0];
+
+    let yaml_flags = &yaml_file["flags"];
+
+    if yaml_flags.is_badvalue() {
+        return Err(Error::ParseError(ParseError::FieldNotFound("flags".to_string())));
+    }
+
+    let yaml_hash = match yaml_flags.as_hash() {
+        Some(hash) => hash,
+        None => return Err(Error::ParseError(ParseError::InvalidCollectionType))
+    };
 
     let mut flags: Vec<flag::Flag> = Vec::new();
 
-    for (name, data) in flags_json.entries() {
+    // Iterate through the flags list
+    for flag in yaml_hash {
+        let name = flag.0.as_str().unwrap().to_string();
+        let raw_stripes = flag.1.as_vec().unwrap();
         let mut stripes: Vec<flag::Stripe> = Vec::new();
 
-        for i in 0..data.len() {
-            let color = data[i]["color"].to_string();
-            let height: u8 = data[i]["height"]
-                .as_u8()
-                .expect("height in flags.json is invalid");
+        for raw_stripe in raw_stripes {
+            let raw_stripe = raw_stripe.as_vec().unwrap();
 
-            let stripe = flag::Stripe::new(&color, height);
+            let color = raw_stripe[0].as_str().unwrap().to_string();
+            let height: u8 = raw_stripe[1].as_i64().unwrap().try_into().unwrap();
+
+            let stripe_parse = flag::Stripe::from(&color, height);
+
+            if let Err(..) = stripe_parse {
+                return Err(Error::ParseError(ParseError::InvalidColor {
+                    flag_name: name,
+                    color
+                }));
+            }
+
+            let stripe = stripe_parse.unwrap();
+
             stripes.push(stripe);
         }
 
-        let flag = flag::Flag::new(name.to_string(), stripes);
+        let flag = flag::Flag::new(name, stripes);
         flags.push(flag);
     }
 

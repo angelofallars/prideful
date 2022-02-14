@@ -56,8 +56,11 @@ fn main() -> Result<(), io::Error> {
             config::Error::Io(io_err) => {
                 println!("I/O error while reading the config file: {}", io_err);
             }
-            config::Error::Json(json_err) => {
-                println!("JSON error while reading the config file: {}", json_err);
+            config::Error::Yaml(yaml_err) => {
+                println!("YAML error while reading the config file: {}", yaml_err);
+            }
+            config::Error::ParseError(parse_err) => {
+                println!("Parse error while reading the config file: {:#?}", parse_err);
             }
         }
 
