@@ -9,11 +9,7 @@ A CLI-based pride flag generator written in Rust.
 
 Build the project using `cargo`. Install `cargo` by following the Rustup install instructions [here](https://www.rust-lang.org/learn/get-started).
 
-### All steps (when `cargo` is installed)
-
-- ```cargo install --git https://github.com/angelofallars/prideful```
-
-**Note:** This project is still in development, so bugs are to be expected. Things may also change without warning.
+```cargo install --git https://github.com/angelofallars/prideful```
 
 ## Config
 
