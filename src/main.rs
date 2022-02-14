@@ -42,10 +42,30 @@ fn main() -> Result<(), io::Error> {
 
     let matches = app.get_matches();
 
-    let flags = match matches.value_of("config") {
-        Some(path) => config::load_config_from_path(path).unwrap(),
-        None => config::load_config().unwrap(),
+    let config_parse_result = match matches.value_of("config") {
+        Some(path) => config::load_config_from_path(path),
+        None => config::load_config(),
     };
+
+    if config_parse_result.is_err() {
+        let error = config_parse_result.unwrap_err();
+
+        match error {
+            config::Error::FileNotFound => {
+                println!("ERROR: config file not found.");
+            },
+            config::Error::Io(io_err) => {
+                println!("I/O error while reading the config file: {}", io_err);
+            },
+            config::Error::Json(json_err) => {
+                println!("JSON error while reading the config file: {}", json_err);
+            }
+        }
+
+        std::process::exit(1);
+    }
+
+    let flags = config_parse_result.unwrap();
 
     if matches.is_present("list") {
         println!("List of flags:");
