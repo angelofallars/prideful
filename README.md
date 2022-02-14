@@ -1,5 +1,7 @@
 # 🌈 `prideful` (in development)
 
+<img src="https://img.shields.io/github/stars/angelofallars/prideful?style=flat-square&label=stars&color=E54545"> <img src="https://img.shields.io/github/forks/angelofallars/prideful?style=flat-square&label=forks&color=FFAF4D"> <img src="https://img.shields.io/github/issues-pr/angelofallars/prideful?&style=flat-square&color=FFF23E"> <img src="https://img.shields.io/github/issues/angelofallars/prideful?style=flat-square&color=26813C"> <img src="https://img.shields.io/github/last-commit/angelofallars/prideful?style=flat-square&color=4B81FF"> <img src="https://img.shields.io/github/license/angelofallars/prideful?style=flat-square&color=7C2888">
+
 A CLI-based pride flag generator written in Rust.
 
 ![flags](https://user-images.githubusercontent.com/39676098/149643374-b69507cb-4617-43c8-9666-1ea5277c821e.png)
