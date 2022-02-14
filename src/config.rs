@@ -509,14 +509,12 @@ impl From<json::Error> for Error {
 }
 
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
-    // Detect the flags.json file in ~/.config/prideful
-    // If no file or no directory, make them
-    // Open JSON file
     let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
 
     let flags_json_path = match xdg_dir.find_config_file("flags.json") {
         Some(path) => path,
         None => {
+            // If no file found, place the default config
             let path = xdg_dir
                 .place_config_file("flags.json")?;
 
@@ -543,7 +541,6 @@ pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
 fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
     let flags_json = json::parse(&contents)?;
 
-    // Parse JSON config and store the flags in a vector
     let mut flags: Vec<flag::Flag> = Vec::new();
 
     for (name, data) in flags_json.entries() {
