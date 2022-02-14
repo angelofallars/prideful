@@ -9,20 +9,41 @@ A CLI-based pride flag generator written in Rust.
 
 Build the project using `cargo`. Install `cargo` by following the Rustup install instructions [here](https://www.rust-lang.org/learn/get-started).
 
-Right now you **must** manually copy the `flags.json`
-file to your `XDG_CONFIG_HOME` directory, or there will be an error. The path should be `~/.config/prideful/flags.json`.
-
 ### All steps (when `cargo` is installed)
 
-- ```git clone https://github.com/angelofallars/prideful```
-
-- ```cd prideful```
-
-- ```cargo install --path .```
-
-- ```cp -r ./config ~/.config/prideful```
+- ```cargo install --git https://github.com/angelofallars/prideful```
 
 **Note:** This project is still in development, so bugs are to be expected. Things may also change without warning.
+
+### Config
+
+The config file is located in `$XDG_CONFIG_HOME/prideful/prideful.yml`, usually `~/.config/prideful/prideful.yml`.
+Flags are defined using YAML syntax, which means that adding new flags should be very easy.
+
+Example snippets from the default config:
+```yaml
+ 
+  # Left is the color code in hexadecimal notation, right is the height of the stripe.
+  classic:
+    - [ "#E50000", 2 ]
+    - [ "#FF8D00", 2 ]
+    - [ "#FFEE00", 2 ]
+    - [ "#028121", 2 ]
+    - [ "#004CFF", 2 ]
+    - [ "#770088", 2 ]
+
+  bi:
+    - [ "#D60270", 4 ]
+    - [ "#9B4F96", 3 ]
+    - [ "#0038A8", 4 ]
+
+  trans:
+    - [ "#5BCFFB", 2 ]
+    - [ "#F5ABB9", 2 ]
+    - [ "#FFFFFF", 2 ]
+    - [ "#F5ABB9", 2 ]
+    - [ "#5BCFFB", 2 ]
+```
 
 ## Contributors
 
