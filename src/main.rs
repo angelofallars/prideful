@@ -8,7 +8,6 @@ use crate::flag::{Flag, Width};
 fn main() -> Result<(), io::Error> {
     let app = App::new("prideful")
         .version("0.1")
-        .author("Angelo Fallaria <ba.fallaria@gmail.com>")
         .about("A configurable TUI Pride flag generator.")
         .arg(
             Arg::with_name("width")
