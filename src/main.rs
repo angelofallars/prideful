@@ -49,7 +49,7 @@ fn main() -> Result<(), io::Error> {
 
     if matches.is_present("list") {
         println!("List of flags:");
-        print_flags(&flags);
+        list_flags(&flags);
         return Ok(());
     }
 
@@ -73,14 +73,14 @@ fn main() -> Result<(), io::Error> {
     } else {
         println!("Error: Unknown flag name `{}`", flag_name);
         println!("List of available flags:");
-        print_flags(&flags);
+        list_flags(&flags);
         return Ok(());
     }
 
     Ok(())
 }
 
-fn print_flags(flags: &Vec<Flag>) {
+fn list_flags(flags: &Vec<Flag>) {
     for flag in flags {
         let mini_flag = flag.show_mini();
         println!("  {: <9} {}", flag.name, mini_flag);
