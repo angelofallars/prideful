@@ -94,7 +94,7 @@ fn main() -> Result<(), io::Error> {
         println!("Error: Unknown flag name `{}`", flag_name);
         println!("List of available flags:");
         list_flags(&flags);
-        return Ok(());
+        std::process::exit(1);
     }
 
     Ok(())
