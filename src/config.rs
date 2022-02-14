@@ -5,6 +5,10 @@ extern crate yaml_rust;
 
 mod default {
     pub const DEFAULT_CONFIG: &str = r##"flags:
+  ## Flags are formatted with their name,
+  ## followed by some stripes.
+  ## Each stripe has a format of `- [ <color hex code>, <height> ]`.
+
   classic:
     - [ "#E50000", 2 ]
     - [ "#FF8D00", 2 ]
