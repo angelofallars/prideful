@@ -42,7 +42,7 @@ impl From<yaml_rust::ScanError> for Error {
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
     let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
 
-    let flags_json_path = match xdg_dir.find_config_file("flags.yml") {
+    let flags_yaml_path = match xdg_dir.find_config_file("flags.yml") {
         Some(path) => path,
         None => {
             // If no file found, place the default config
@@ -54,15 +54,15 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
         }
     };
 
-    let flags_json_str: String = String::from_utf8_lossy(&fs::read(flags_json_path)?).to_string();
+    let flags_yaml_str: String = String::from_utf8_lossy(&fs::read(flags_yaml_path)?).to_string();
 
-    parse_config(flags_json_str)
+    parse_config(flags_yaml_str)
 }
 
 pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
-    let flags_json_str: String = String::from_utf8_lossy(&fs::read(path)?).to_string();
+    let flags_yaml_str: String = String::from_utf8_lossy(&fs::read(path)?).to_string();
 
-    parse_config(flags_json_str)
+    parse_config(flags_yaml_str)
 }
 
 fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
