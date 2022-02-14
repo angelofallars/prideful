@@ -15,14 +15,13 @@ Build the project using `cargo`. Install `cargo` by following the Rustup install
 
 **Note:** This project is still in development, so bugs are to be expected. Things may also change without warning.
 
-### Config
+## Config
 
 The config file is located in `$XDG_CONFIG_HOME/prideful/prideful.yml`, usually `~/.config/prideful/prideful.yml`.
 Flags are defined using YAML syntax, which means that adding new flags should be very easy.
 
 Example snippets from the default config:
 ```yaml
- 
   # Left is the color code in hexadecimal notation, right is the height of the stripe.
   classic:
     - [ "#E50000", 2 ]
