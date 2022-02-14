@@ -80,7 +80,7 @@ fn main() -> Result<(), io::Error> {
             Ok(number) => Width::Custom(number),
             Err(..) => {
                 println!("Error: you must specify the width argument a numeric value.");
-                return Ok(());
+                std::process::exit(1);
             }
         },
         None => Width::Full,
