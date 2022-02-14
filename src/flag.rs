@@ -25,15 +25,14 @@ impl Flag {
     }
 
     pub fn display(&self, width: Width, compact: bool) {
-        let terminal_width = get_terminal_width();
-        let terminal_height = get_terminal_height();
+        let (terminal_width, terminal_height) = get_terminal_dimensions();
         let flag_height = self.height();
 
         // Calculate flag width
         let flag_width: usize;
         if !compact {
             flag_width = match width {
-                Width::Full => get_terminal_width(),
+                Width::Full => terminal_width,
                 Width::Custom(custom_width) => {
                     let custom_width: usize = custom_width.try_into().unwrap();
 
@@ -132,24 +131,14 @@ impl Stripe {
     }
 }
 
-fn get_terminal_width() -> usize {
+fn get_terminal_dimensions() -> (usize, usize) {
     // Set up terminal stuff to find terminal width
     let stdout = io::stdout();
     let backend = TermionBackend::new(stdout);
     let terminal = Terminal::new(backend).unwrap();
     let terminal_size = terminal.size().unwrap();
 
-    terminal_size.width.into()
-}
-
-fn get_terminal_height() -> usize {
-    // Set up terminal stuff to find terminal height
-    let stdout = io::stdout();
-    let backend = TermionBackend::new(stdout);
-    let terminal = Terminal::new(backend).unwrap();
-    let terminal_size = terminal.size().unwrap();
-
-    terminal_size.height.into()
+    (terminal_size.width.into(), terminal_size.height.into())
 }
 
 #[derive(PartialEq)]
