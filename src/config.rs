@@ -121,11 +121,11 @@ impl From<yaml_rust::ScanError> for Error {
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
     let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
 
-    let flags_yaml_path = match xdg_dir.find_config_file("flags.yml") {
+    let flags_yaml_path = match xdg_dir.find_config_file("prideful.yml") {
         Some(path) => path,
         None => {
             // If no file found, place the default config
-            let path = xdg_dir.place_config_file("flags.yml")?;
+            let path = xdg_dir.place_config_file("prideful.yml")?;
 
             fs::write(&path, default::DEFAULT_CONFIG)?;
 
