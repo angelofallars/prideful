@@ -53,10 +53,10 @@ fn main() -> Result<(), io::Error> {
         match error {
             config::Error::FileNotFound => {
                 println!("ERROR: config file not found.");
-            },
+            }
             config::Error::Io(io_err) => {
                 println!("I/O error while reading the config file: {}", io_err);
-            },
+            }
             config::Error::Json(json_err) => {
                 println!("JSON error while reading the config file: {}", json_err);
             }
