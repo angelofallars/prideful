@@ -6,7 +6,7 @@ mod flag;
 use crate::flag::{Flag, Width};
 
 fn main() -> Result<(), io::Error> {
-    let app = App::new("prideful")
+    let matches = App::new("prideful")
         .version("0.1")
         .about("A configurable TUI Pride flag generator.")
         .arg(
@@ -38,9 +38,8 @@ fn main() -> Result<(), io::Error> {
             Arg::with_name("flag")
                 .takes_value(true)
                 .required_unless("list"),
-        );
-
-    let matches = app.get_matches();
+        )
+        .get_matches();
 
     let config_parse_result = match matches.value_of("config") {
         Some(path) => config::load_config_from_path(path),
