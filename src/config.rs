@@ -1,8 +1,6 @@
 use crate::flag;
 use std::fs;
 use std::io;
-use std::io::Write;
-use std::path;
 
 mod default {
     pub const DEFAULT_CONFIG: &str = r##"

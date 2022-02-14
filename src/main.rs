@@ -1,11 +1,9 @@
 use clap::{App, Arg};
-use colored::*;
-use std::collections::HashMap;
 use std::io;
 extern crate clap;
 mod config;
 mod flag;
-use crate::flag::{Flag, Stripe, Width};
+use crate::flag::{Flag, Width};
 
 fn main() -> Result<(), io::Error> {
     let app = App::new("prideful")
