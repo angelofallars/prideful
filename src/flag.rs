@@ -113,7 +113,7 @@ impl Flag {
 
 #[derive(Debug)]
 pub enum Error {
-    InvalidColor
+    InvalidColor,
 }
 
 // Individual stripe in a flag

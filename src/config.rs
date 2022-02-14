@@ -91,7 +91,7 @@ pub enum Error {
     FileNotFound,
     Io(io::Error),
     Yaml(yaml_rust::ScanError),
-    ParseError(ParseError)
+    ParseError(ParseError),
 }
 
 #[derive(Debug)]
@@ -99,7 +99,7 @@ pub enum ParseError {
     FieldNotFound(String),
     EmptyYamlFile,
     InvalidCollectionType,
-    InvalidColor { flag_name: String, color: String }
+    InvalidColor { flag_name: String, color: String },
 }
 
 impl From<std::io::Error> for Error {
@@ -157,12 +157,14 @@ fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
     let yaml_flags = &yaml_file["flags"];
 
     if yaml_flags.is_badvalue() {
-        return Err(Error::ParseError(ParseError::FieldNotFound("flags".to_string())));
+        return Err(Error::ParseError(ParseError::FieldNotFound(
+            "flags".to_string(),
+        )));
     }
 
     let yaml_hash = match yaml_flags.as_hash() {
         Some(hash) => hash,
-        None => return Err(Error::ParseError(ParseError::InvalidCollectionType))
+        None => return Err(Error::ParseError(ParseError::InvalidCollectionType)),
     };
 
     let mut flags: Vec<flag::Flag> = Vec::new();
@@ -184,7 +186,7 @@ fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
             if let Err(..) = stripe_parse {
                 return Err(Error::ParseError(ParseError::InvalidColor {
                     flag_name: name,
-                    color
+                    color,
                 }));
             }
 

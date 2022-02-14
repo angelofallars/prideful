@@ -60,7 +60,10 @@ fn main() -> Result<(), io::Error> {
                 println!("YAML error while reading the config file: {}", yaml_err);
             }
             config::Error::ParseError(parse_err) => {
-                println!("Parse error while reading the config file: {:#?}", parse_err);
+                println!(
+                    "Parse error while reading the config file: {:#?}",
+                    parse_err
+                );
             }
         }
 
