@@ -19,6 +19,7 @@ pub enum Error {
 #[derive(Debug)]
 pub enum ParseError {
     FieldNotFound(String),
+    EmptyYamlFile,
     InvalidCollectionType,
     InvalidColor { flag_name: String, color: String }
 }
@@ -67,7 +68,13 @@ pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
 
 fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
     // Parse the YAML file
-    let yaml_file = &yaml_rust::YamlLoader::load_from_str(&contents)?[0];
+    let yaml_file = &yaml_rust::YamlLoader::load_from_str(&contents)?;
+
+    if yaml_file.len() < 1 {
+        return Err(Error::ParseError(ParseError::EmptyYamlFile));
+    }
+
+    let yaml_file = &yaml_file[0];
 
     let yaml_flags = &yaml_file["flags"];
 
