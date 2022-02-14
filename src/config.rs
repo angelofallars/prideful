@@ -1,5 +1,6 @@
 use crate::flag;
 use std::fs;
+use std::io;
 use std::io::Write;
 use std::path;
 
@@ -489,7 +490,24 @@ mod default {
 #[derive(Debug)]
 pub enum Error {
     FileNotFound,
-    JsonError,
+    Io(io::Error),
+    Json(json::Error),
+}
+
+impl From<std::io::Error> for Error {
+    fn from(val: std::io::Error) -> Self {
+        if val.kind() == std::io::ErrorKind::NotFound {
+            Error::FileNotFound
+        } else {
+            Error::Io(val)
+        }
+    }
+}
+
+impl From<json::Error> for Error {
+    fn from(val: json::Error) -> Self {
+        Error::Json(val)
+    }
 }
 
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
@@ -502,17 +520,16 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
         Some(path) => path,
         None => {
             let path = xdg_dir
-                .place_config_file("flags.json")
-                .expect("Cannot create config directory");
+                .place_config_file("flags.json")?;
 
-            fs::write(&path, default::DEFAULT_CONFIG).expect("Could not write default config");
+            fs::write(&path, default::DEFAULT_CONFIG)?;
 
             path
         }
     };
 
     let flags_json_str: String =
-        String::from_utf8_lossy(&fs::read(flags_json_path).expect("Could not read flags.json"))
+        String::from_utf8_lossy(&fs::read(flags_json_path)?)
             .to_string();
 
     parse_config(flags_json_str)
@@ -520,13 +537,13 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
 
 pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
     let flags_json_str: String =
-        String::from_utf8_lossy(&fs::read(path).expect("Could not read file")).to_string();
+        String::from_utf8_lossy(&fs::read(path)?).to_string();
 
     parse_config(flags_json_str)
 }
 
 fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
-    let flags_json = json::parse(&contents).expect("Error in parsing flags.json file");
+    let flags_json = json::parse(&contents)?;
 
     // Parse JSON config and store the flags in a vector
     let mut flags: Vec<flag::Flag> = Vec::new();
