@@ -8,9 +8,9 @@ A CLI-based pride flag generator written in Rust.
 
 ## How to run
 
-Build the project using `cargo`. Install `cargo` by following the Rustup install instructions [here](https://www.rust-lang.org/learn/get-started).
+Install the project using `cargo`.
 
-```cargo install --git https://github.com/angelofallars/prideful```
+```cargo install prideful```
 
 ## Usage
 
