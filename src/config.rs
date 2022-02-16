@@ -266,10 +266,10 @@ fn parse_config(contents: String) -> Result<(String, Vec<flag::Flag>), Error> {
         flags.push(flag);
     }
 
-    let yaml_default_flag = match yaml_default_flag.as_str()  {
+    let yaml_default_flag = match yaml_default_flag.as_str() {
         Some(str) => str,
         None => return Err(Error::ParseError(ParseError::InvalidCollectionType)),
     };
 
     Ok((yaml_default_flag.to_string(), flags))
-} 
+}

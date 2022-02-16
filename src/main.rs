@@ -35,10 +35,7 @@ fn main() -> Result<(), io::Error> {
                 .long("list")
                 .help("List available flags."),
         )
-        .arg(
-            Arg::with_name("flag")
-                .takes_value(true)
-        )
+        .arg(Arg::with_name("flag").takes_value(true))
         .get_matches();
 
     let config_parse_result: Result<(String, Vec<Flag>), Error> = match matches.value_of("config") {
