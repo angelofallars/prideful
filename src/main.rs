@@ -53,6 +53,9 @@ fn main() -> Result<(), io::Error> {
             config::Error::FileNotFound => {
                 println!("ERROR: config file not found.");
             }
+            config::Error::MakeDir => {
+                println!("ERROR: Could not create default config directory.");
+            }
             config::Error::Io(io_err) => {
                 println!("I/O error while reading the config file: {}", io_err);
             }

@@ -93,6 +93,7 @@ mod default {
 #[derive(Debug)]
 pub enum Error {
     FileNotFound,
+    MakeDir,
     Io(io::Error),
     Yaml(yaml_rust::ScanError),
     ParseError(ParseError),
@@ -123,23 +124,50 @@ impl From<yaml_rust::ScanError> for Error {
 }
 
 pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
-    let xdg_dir = xdg::BaseDirectories::with_prefix("prideful").unwrap();
+    let path = find_config_path();
 
-    let flags_yaml_path = match xdg_dir.find_config_file("prideful.yml") {
-        Some(path) => path,
-        None => {
-            // If no file found, place the default config
-            let path = xdg_dir.place_config_file("prideful.yml")?;
+    if path.is_none() {
+        return Err(Error::MakeDir);
+    }
 
-            fs::write(&path, default::DEFAULT_CONFIG)?;
+    let path = path.unwrap();
 
-            path
-        }
-    };
-
-    let flags_yaml_str: String = String::from_utf8_lossy(&fs::read(flags_yaml_path)?).to_string();
+    let flags_yaml_str: String = String::from_utf8_lossy(&fs::read(path)?).to_string();
 
     parse_config(flags_yaml_str)
+}
+
+fn find_config_path() -> Option<std::path::PathBuf> {
+    // Find XDG location first
+    if let Ok(xdg_dir) = xdg::BaseDirectories::with_prefix("prideful") {
+        // Find config file
+        if let Some(xdg_config_file) = xdg_dir.find_config_file("prideful.yml") {
+            return Some(xdg_config_file);
+
+        } else {
+            // Write the default config
+            let path = xdg_dir.place_config_file("prideful.yml").unwrap();
+            fs::write(&path, default::DEFAULT_CONFIG).expect("Error: could not write default config to XDG directory.");
+            return Some(path);
+        }
+
+    } else {
+        // Then find $HOME directory
+        if let Ok(home) = std::env::var("HOME") {
+            let fallback_home_dir = std::path::PathBuf::from(&home).join(".config/prideful");
+            let fallback_home_file = fallback_home_dir.join("prideful.yml");
+
+            if fallback_home_file.exists() {
+                return Some(fallback_home_file);
+            } else {
+                // Write default config
+                fs::create_dir_all(fallback_home_dir).expect("Error: could not make default config directory.");
+                fs::write(&fallback_home_file, default::DEFAULT_CONFIG).expect("Error: could not write default config to $HOME/.config/prideful/prideful.yml.");
+                return Some(fallback_home_file);
+            }
+        }
+    }
+    None
 }
 
 pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
