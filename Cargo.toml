@@ -7,7 +7,7 @@ description = "A YAML-configurable command-line Pride flag generator."
 homepage = "https://github.com/angelofallars/prideful"
 documentation = "https://github.com/angelofallars/prideful/blob/main/README.md"
 repository = "https://github.com/angelofallars/prideful"
-readme = "https://github.com/angelofallars/prideful/blob/main/README.md"
+readme = "https://github.com/angelofallars/prideful/raw/main/README.md"
 
 keywords = ["pride", "terminal", "cli", "yaml", "lgbt"]
 categories = ["command-line-utilities"]
