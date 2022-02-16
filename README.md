@@ -6,7 +6,11 @@ A CLI-based pride flag generator written in Rust.
 
 ![flags](https://user-images.githubusercontent.com/39676098/149643374-b69507cb-4617-43c8-9666-1ea5277c821e.png)
 
-## How to run
+## Install (Binary, Linux)
+
+Download the latest release from the [Releases section](https://github.com/angelofallars/prideful/releases) and place it on your `$PATH`, most likely `~/.local/bin`.
+
+## Compile (Linux/macOS/BSD)
 
 Install the project using `cargo`.
 
