@@ -1,8 +1,9 @@
 use crate::flag;
 use std::fs;
 use std::io;
-extern crate yaml_rust;
 extern crate directories;
+extern crate yaml_rust;
+#[cfg(windows)]
 use directories::BaseDirs;
 
 mod default {
@@ -146,14 +147,13 @@ fn find_config_path() -> Option<std::path::PathBuf> {
         // Find config file
         if let Some(xdg_config_file) = xdg_dir.find_config_file("prideful.yml") {
             return Some(xdg_config_file);
-
         } else {
             // Write the default config
             let path = xdg_dir.place_config_file("prideful.yml").unwrap();
-            fs::write(&path, default::DEFAULT_CONFIG).expect("Error: could not write default config to XDG directory.");
+            fs::write(&path, default::DEFAULT_CONFIG)
+                .expect("Error: could not write default config to XDG directory.");
             return Some(path);
         }
-
     } else {
         // Then find $HOME directory
         if let Ok(home) = std::env::var("HOME") {
@@ -164,8 +164,11 @@ fn find_config_path() -> Option<std::path::PathBuf> {
                 return Some(fallback_home_file);
             } else {
                 // Write default config
-                fs::create_dir_all(fallback_home_dir).expect("Error: could not make default config directory.");
-                fs::write(&fallback_home_file, default::DEFAULT_CONFIG).expect("Error: could not write default config to $HOME/.config/prideful/prideful.yml.");
+                fs::create_dir_all(fallback_home_dir)
+                    .expect("Error: could not make default config directory.");
+                fs::write(&fallback_home_file, default::DEFAULT_CONFIG).expect(
+                    "Error: could not write default config to $HOME/.config/prideful/prideful.yml.",
+                );
                 return Some(fallback_home_file);
             }
         }
@@ -183,8 +186,10 @@ fn find_config_path() -> Option<std::path::PathBuf> {
             return Some(config_file_path);
         } else {
             // Write default config
-            fs::create_dir_all(config_dir).expect("Error: could not make default config directory.");
-            fs::write(&config_file_path, default::DEFAULT_CONFIG).expect("Error: could not write default config.");
+            fs::create_dir_all(config_dir)
+                .expect("Error: could not make default config directory.");
+            fs::write(&config_file_path, default::DEFAULT_CONFIG)
+                .expect("Error: could not write default config.");
             return Some(config_file_path);
         }
     }
