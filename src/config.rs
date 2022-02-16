@@ -2,6 +2,8 @@ use crate::flag;
 use std::fs;
 use std::io;
 extern crate yaml_rust;
+extern crate directories;
+use directories::BaseDirs;
 
 mod default {
     pub const DEFAULT_CONFIG: &str = r##"flags:
@@ -137,6 +139,7 @@ pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
     parse_config(flags_yaml_str)
 }
 
+#[cfg(not(windows))]
 fn find_config_path() -> Option<std::path::PathBuf> {
     // Find XDG location first
     if let Ok(xdg_dir) = xdg::BaseDirectories::with_prefix("prideful") {
@@ -167,6 +170,25 @@ fn find_config_path() -> Option<std::path::PathBuf> {
             }
         }
     }
+    None
+}
+
+#[cfg(windows)]
+fn find_config_path() -> Option<std::path::PathBuf> {
+    if let Some(base_dirs) = BaseDirs::new() {
+        let config_dir = base_dirs.config_dir().join("prideful/");
+        let config_file_path = config_dir.join("prideful.yml");
+
+        if config_file_path.exists() {
+            return Some(config_file_path);
+        } else {
+            // Write default config
+            fs::create_dir_all(config_dir).expect("Error: could not make default config directory.");
+            fs::write(&config_file_path, default::DEFAULT_CONFIG).expect("Error: could not write default config.");
+            return Some(config_file_path);
+        }
+    }
+
     None
 }
 
