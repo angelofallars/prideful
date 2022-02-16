@@ -11,7 +11,6 @@ mod default {
   ## Flags are formatted with their name,
   ## followed by some stripes.
   ## Each stripe has a format of `- [ <color hex code>, <height> ]`.
-
   classic:
     - [ "#E50000", 2 ]
     - [ "#FF8D00", 2 ]
@@ -59,7 +58,7 @@ mod default {
     - [ "#FCFCFC", 2 ]
     - [ "#9D59D2", 2 ]
     - [ "#282828", 2 ]
-
+    
   agen:
     - [ "#000000", 1 ]
     - [ "#BABABA", 1 ]
@@ -90,7 +89,9 @@ mod default {
   queer:
     - [ "#B57FDD", 4 ]
     - [ "#FFFFFF", 4 ]
-    - [ "#49821E", 4 ]"##;
+    - [ "#49821E", 4 ]
+
+default_flag: classic"##;
 }
 
 #[derive(Debug)]
@@ -126,7 +127,7 @@ impl From<yaml_rust::ScanError> for Error {
     }
 }
 
-pub fn load_config() -> Result<Vec<flag::Flag>, Error> {
+pub fn load_config() -> Result<(String, Vec<flag::Flag>), Error> {
     let path = find_config_path();
 
     if path.is_none() {
@@ -197,13 +198,13 @@ fn find_config_path() -> Option<std::path::PathBuf> {
     None
 }
 
-pub fn load_config_from_path(path: &str) -> Result<Vec<flag::Flag>, Error> {
+pub fn load_config_from_path(path: &str) -> Result<(String, Vec<flag::Flag>), Error> {
     let flags_yaml_str: String = String::from_utf8_lossy(&fs::read(path)?).to_string();
 
     parse_config(flags_yaml_str)
 }
 
-fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
+fn parse_config(contents: String) -> Result<(String, Vec<flag::Flag>), Error> {
     // Parse the YAML file
     let yaml_file = &yaml_rust::YamlLoader::load_from_str(&contents)?;
 
@@ -214,6 +215,7 @@ fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
     let yaml_file = &yaml_file[0];
 
     let yaml_flags = &yaml_file["flags"];
+    let yaml_default_flag = &yaml_file["default_flag"];
 
     if yaml_flags.is_badvalue() {
         return Err(Error::ParseError(ParseError::FieldNotFound(
@@ -221,7 +223,13 @@ fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
         )));
     }
 
-    let yaml_hash = match yaml_flags.as_hash() {
+    if yaml_default_flag.is_badvalue() {
+        return Err(Error::ParseError(ParseError::FieldNotFound(
+            "default_flag".to_string(),
+        )));
+    }
+
+    let yaml_flags_hash = match yaml_flags.as_hash() {
         Some(hash) => hash,
         None => return Err(Error::ParseError(ParseError::InvalidCollectionType)),
     };
@@ -229,7 +237,7 @@ fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
     let mut flags: Vec<flag::Flag> = Vec::new();
 
     // Iterate through the flags list
-    for flag in yaml_hash {
+    for flag in yaml_flags_hash {
         let name = flag.0.as_str().unwrap().to_string();
         let raw_stripes = flag.1.as_vec().unwrap();
         let mut stripes: Vec<flag::Stripe> = Vec::new();
@@ -258,5 +266,10 @@ fn parse_config(contents: String) -> Result<Vec<flag::Flag>, Error> {
         flags.push(flag);
     }
 
-    Ok(flags)
+    let yaml_default_flag = match yaml_default_flag.as_str() {
+        Some(str) => str,
+        None => return Err(Error::ParseError(ParseError::InvalidCollectionType)),
+    };
+
+    Ok((yaml_default_flag.to_string(), flags))
 }

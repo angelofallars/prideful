@@ -4,6 +4,7 @@ extern crate clap;
 mod config;
 mod flag;
 use crate::flag::{Flag, Width};
+use config::Error;
 
 fn main() -> Result<(), io::Error> {
     let matches = App::new("prideful")
@@ -34,14 +35,10 @@ fn main() -> Result<(), io::Error> {
                 .long("list")
                 .help("List available flags."),
         )
-        .arg(
-            Arg::with_name("flag")
-                .takes_value(true)
-                .required_unless("list"),
-        )
+        .arg(Arg::with_name("flag").takes_value(true))
         .get_matches();
 
-    let config_parse_result = match matches.value_of("config") {
+    let config_parse_result: Result<(String, Vec<Flag>), Error> = match matches.value_of("config") {
         Some(path) => config::load_config_from_path(path),
         None => config::load_config(),
     };
@@ -73,7 +70,9 @@ fn main() -> Result<(), io::Error> {
         std::process::exit(1);
     }
 
-    let flags = config_parse_result.unwrap();
+    let config_data = config_parse_result.unwrap();
+    let mut flag_name = config_data.0;
+    let flags = config_data.1;
 
     if matches.is_present("list") {
         println!("List of flags:");
@@ -94,7 +93,9 @@ fn main() -> Result<(), io::Error> {
         None => Width::Full,
     };
 
-    let flag_name: String = matches.value_of("flag").unwrap().to_string();
+    if matches.is_present("flag") {
+        flag_name = matches.value_of("flag").unwrap().to_string();
+    }
 
     if let Some(index) = flags.iter().position(|flag| flag.name == flag_name) {
         flags[index].display(flag_width, compact);
