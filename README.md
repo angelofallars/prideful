@@ -12,6 +12,24 @@ Build the project using `cargo`. Install `cargo` by following the Rustup install
 
 ```cargo install --git https://github.com/angelofallars/prideful```
 
+## Usage
+
+To display a flag, run `prideful` with the flag of your choice. For example, `prideful classic`. To get the list of command-line options, run `prideful --help`. Run `prideful --list` to list available flags.
+
+List of default flags:
+- `classic`
+- `pastel`
+- `les`
+- `gay`
+- `bi`
+- `trans`
+- `enby`
+- `agen`
+- `ace`
+- `aro`
+- `pan`
+- `queer`
+
 ## Config
 
 The config file is located in `$XDG_CONFIG_HOME/prideful/prideful.yml`, usually `~/.config/prideful/prideful.yml`.
