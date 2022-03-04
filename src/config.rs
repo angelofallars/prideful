@@ -91,6 +91,11 @@ mod default {
     - [ "#FFFFFF", 4 ]
     - [ "#49821E", 4 ]
 
+  serbia:
+    - [ "#C7363D", 4 ]
+    - [ "#0C4077", 4 ]
+    - [ "#FFFFFF", 4 ]
+
 default_flag: classic"##;
 }
 
