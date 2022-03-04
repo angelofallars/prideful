@@ -96,7 +96,7 @@ mod default {
     - [ "#0C4077", 4 ]
     - [ "#FFFFFF", 4 ]
 
-default_flag: classic"##;
+default_flag: serbia"##;
 }
 
 #[derive(Debug)]
