@@ -86,6 +86,12 @@ mod default {
     - [ "#FFD700", 4 ]
     - [ "#1AB3FF", 4 ]
 
+  unlabeled:
+    - [ "#DCFDE0", 2 ]
+    - [ "#FDFEF8", 2 ]
+    - [ "#D9EFFA", 2 ]
+    - [ "#FEE0BE", 2 ]
+
   queer:
     - [ "#B57FDD", 4 ]
     - [ "#FFFFFF", 4 ]
